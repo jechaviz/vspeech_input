@@ -31,3 +31,17 @@ fn test_endpointer_detects_silence_after_speech() {
 	assert !endpoint.ingest_pcm16(silence).ended
 	assert endpoint.ingest_pcm16(silence).ended
 }
+
+
+fn test_zero_system_recognizer_is_safe_without_backend() {
+	mut recognizer := SystemRecognizer{}
+	assert !recognizer.active()
+	assert recognizer.poll(4).len == 0
+	recognizer.close()
+	assert !recognizer.active()
+}
+
+fn test_system_recognizer_poll_default_limit_is_safe() {
+	mut recognizer := SystemRecognizer{}
+	assert recognizer.poll(0).len == 0
+}

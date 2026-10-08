@@ -48,7 +48,7 @@ pub fn (mut recognizer SystemRecognizer) poll(max_events int) []TranscriptEvent 
 		for _ in 0 .. limit {
 			mut buffer := []u8{len: 4096}
 			mut final := 0
-			if C.vspeech_input_system_poll(recognizer.handle, &buffer[0], buffer.len, &final) == 0 {
+			if C.vspeech_input_system_poll(recognizer.handle, unsafe { &buffer[0] }, buffer.len, &final) == 0 {
 				break
 			}
 			text := nul_text(buffer).trim_space()
